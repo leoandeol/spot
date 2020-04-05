@@ -15,8 +15,8 @@ def BoxMuller():
 DIM = 3
 slices = 1000
 dirs = np.zeros((slices, DIM))
-n = 0
 for slice in range(slices):
+    n = 0
     for i in range(0,DIM,2):
         randGauss = BoxMuller()
         randGauss = np.random.randn(2)
@@ -29,7 +29,6 @@ for slice in range(slices):
     for i in range(DIM):
         dirs[slice][i] /= n
 
-        
     
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
