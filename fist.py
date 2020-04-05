@@ -1,6 +1,7 @@
+import numpy as np
 
-
-
+def a(b):
+    b[1]=4
 
 
 def nn(X,Y):
@@ -13,7 +14,18 @@ def assignment(X,Y,t):
     m = X.shape[0]
     n = Y.shape[1]
     for mp in range(1,m):
-        if t[mp+1] > 
+        pass
+        #if t[mp+1] >
 
-def __main__():
+
+def fist(Xs, lambdas,a ):
+    K = len(Xs)
+    assert K == len(lambdas)
+    #Xt = np.
     
+
+if __name__ == "__main__":
+    b = [1,2,3]
+    print(b)
+    a(b)
+    print(b)
