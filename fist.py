@@ -1,4 +1,5 @@
 import numpy as np
+from dirs import generate_directions
 
 
 
@@ -33,15 +34,55 @@ def assignment(X,Y,t):
             a.append(t[mp+1])
         else:
 
+def best_transform(X, Y):
+    # a recommenter/recoder
+    assert X.shape == Y.shape
 
-def fist(Xs, lambdas,a ):
+    # get number of dimensions
+    m = A.shape[1]
+
+    # translate points to their centroids
+    centroid_A = np.mean(A, axis=0)
+    centroid_B = np.mean(B, axis=0)
+    AA = A - centroid_A
+    BB = B - centroid_B
+
+    # rotation matrix
+    H = np.dot(AA.T, BB)
+    U, S, Vt = np.linalg.svd(H)
+    R = np.dot(Vt.T, U.T)
+
+    # special reflection case
+    if np.linalg.det(R) < 0:
+       Vt[m-1,:] *= -1
+       R = np.dot(Vt.T, U.T)
+
+    # translation
+    t = centroid_B.T - np.dot(R,centroid_A.T)
+
+    # homogeneous transformation
+    T = np.identity(m+1)
+    T[:m, :m] = R
+    T[:m, m] = t
+
+    return T, R, t
+            
+def fist(X,a ):
     K = len(Xs)
+    dim = Xs[0].shape[1]
     assert K == len(lambdas)
-    #Xt = np.
-    
+    X_tilde = np.zeros(X.shape)
+    X_inv_hessian = np.eye(dim)*d
+    dirs = generate_directions(3,100)
 
-if __name__ == "__main__":
-    b = [1,2,3]
-    print(b)
-    a(b)
-    print(b)
+    # Newton's iterations
+    for i in range(n_iter):
+        X_grad = np.sum(np.stack([(X_tilde*dirs[i].reshape((1,-1))).sum(1) -
+                                  (a[k](Xs[k])*dirs[i].reshape((1,-1))).sum(1)) / dirs.shape[0]),0)
+        X_tilde = X_tilde - X_grad @ X_inv_hessian
+
+        T,R,t = best_transform(X,X_tilde) # Transformation : Rotation + translation
+
+        X_proj = T @ X_tilde
+        yield X_proj
+        
