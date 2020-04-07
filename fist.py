@@ -46,7 +46,7 @@ def retrieve_r(a,s,start,end):
 def sum_shifted_costs(X,Y,a,start,end):
     cost = 0
     for i in range(start,end):
-        cost += cost(X[i],Y[a[i]-1]) + cost(X[end+1],Y[a[end]])
+        cost += cost(X[i],Y[a[i]-1]) + cost(X[end+1],Y[a[end-1]])
     return cost
     
 # Returns the sum of the costs when keeping the current assignment and adding the new one on the right
@@ -63,7 +63,7 @@ def assignment(X,Y):
     t = np.zeros(m)
     nn_paper(X,Y, 0, m, 0, n, t) # Nearest neighbor match between X and Y
     a[0] = t[0]
-    for mp in range(m):
+    for mp in range(m-1):
         if t[mp+1] > a[mp]:
             a[mp+1] = t[mp+1]
         else:
