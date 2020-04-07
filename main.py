@@ -1,7 +1,7 @@
 import numpy as np
 import argparse
 from fist import fist
-from data import data
+from data import read_ply, write_ply
 from tqdm import tqdm
 from time import time
 
