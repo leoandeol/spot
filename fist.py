@@ -113,18 +113,19 @@ def best_transform(X, Y):
 
     return T, R, t
             
-def fist(X,a ):
-    K = len(Xs)
-    dim = Xs[0].shape[1]
+def fist(X,Y, n_iter, n_dirs):
+    dim = X.shape[1]
     assert K == len(lambdas)
     X_tilde = np.zeros(X.shape)
     X_inv_hessian = np.eye(dim)*d
-    dirs = generate_directions(3,100)
+    dirs = generate_directions(dim,n_dirs)
 
-    # Newton's iterations
     for i in range(n_iter):
+        #Find assignment
+
+        #Newton's iteration
         X_grad = np.sum(np.stack([(X_tilde*dirs[i].reshape((1,-1))).sum(1) -
-                                  (a[k](Xs[k])*dirs[i].reshape((1,-1))).sum(1)) / dirs.shape[0]),0)
+                                  (a(X)*dirs[i].reshape((1,-1))).sum(1) for i in range(n_dirs)] / n_dirs),0)
         X_tilde = X_tilde - X_grad @ X_inv_hessian
 
         T,R,t = best_transform(X,X_tilde) # Transformation : Rotation + translation

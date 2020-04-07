@@ -19,12 +19,14 @@ def generate_directions(dim=3, slices=100):
             dirs[slice][i] /= n
     return dirs
 
-dirs = generate_directions()
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.scatter(dirs[:,0],dirs[:,1],dirs[:,2])
-plt.show()
-#for angle in range(0, 360):
-#    ax.view_init(30, angle)
-#    plt.draw()
-#    plt.pause(.001)
+if __name__ == "__main__":
+    dirs = generate_directions()
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.scatter(dirs[:,0],dirs[:,1],dirs[:,2])
+    plt.show()
+    #for angle in range(0, 360):
+    #    ax.view_init(30, angle)
+    #    plt.draw()
+    #    plt.pause(.001)
+    
