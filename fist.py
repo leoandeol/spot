@@ -7,20 +7,25 @@ def cost(x,y):
 
 # Paper's implementation of the nn in 1-d
 def nn_paper(X,Y, start0, end0, start1, end1, t):
+    X.sort()
+    Y.sort()
     cursor = start1
-    for i in range(start0, end0):
+    for i in range(start0, end0): 
         mind = np.inf
         minj = -1
         for j in range(max(start1,cursor), end1):
-            d = cost(X[i],Y[i])
+            d = cost(X[i],Y[j])
             cursor = j-1
             if(d <= mind):
                 mind = d
                 minj = j
             else:
-                if(d > mind+(1e-7)):
+                if(d > mind+1e-5):
                     break;
         t[i] = minj;
+        
+def nn(X,Y):
+    return ((X[:,None]-Y[:,None].T)**2).argmin(axis=1)
 
 # Retrieves the right most index of the point from Y (in the range of the already assigned)
 # that isn't assigned to a point from X'
@@ -64,8 +69,9 @@ def assignment(X,Y):
     a = np.zeros(m).astype(int)
     t = np.zeros(m).astype(int)
     nn_paper(X,Y, 0, m, 0, n, t) # Nearest neighbor match between X and Y
+    #t = nn(X,Y) 
     a[0] = t[0]
-    for mp in range(m-1):
+    for mp in range(1,m-1):
         if t[mp+1] > a[mp]:
             a[mp+1] = t[mp+1]
         else:
