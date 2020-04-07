@@ -54,7 +54,7 @@ def sum_shifted_costs(X,Y,a,start,end):
 def sum_non_shifted_costs(X,Y,a,start,end):
     cost_ = 0    
     for i in range(start,end):
-        cost_ += cost(X[i],Y[a[i]]) + cost(X[end+1],Y[a[end]+1])
+        cost_ += cost(X[i],Y[a[i]])
     cost_ += cost(X[end+1],Y[a[end]+1])
     return cost_
 
