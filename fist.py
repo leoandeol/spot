@@ -1,8 +1,6 @@
 import numpy as np
 from dirs import generate_directions
 
-
-
 def cost(x,y):
     z = x-y
     return z*z
@@ -11,7 +9,7 @@ def cost(x,y):
 def nn_paper(X,Y, start0, end0, start1, end1, assignment):
     cursor = start1
     for i in range(start0, end0):
-        mind = numpy.inf
+        mind = np.inf
         minj = -1
         for j in range(max(start1,cursor), end1):
             d = cost(X[i],Y[i])
@@ -60,7 +58,7 @@ def sum_non_shifted_costs(X,Y,a,start,end):
 
 def assignment(X,Y):
     m = X.shape[0]
-    n = Y.shape[1]
+    n = Y.shape[0]
     a = np.zeros(m)
     t = nn_paper(X,Y, 0, m, 0, n, a) # Nearest neighbor match between X and Y
     a[0] = t[0]
@@ -118,18 +116,19 @@ def best_transform(X, Y):
             
 def fist(X,Y, n_iter, n_dirs):
     dim = X.shape[1]
-    assert K == len(lambdas)
     X_tilde = np.zeros(X.shape)
-    X_inv_hessian = np.eye(dim)*d
+    X_inv_hessian = np.eye(dim)*dim
     dirs = generate_directions(dim,n_dirs)
 
     for i in range(n_iter):
         #Find assignment
-        a = assignment(X,Y)
+        a = []
+        for _ in range(n_dirs):
+            a.append(assignment((X*dirs[i].reshape((1,-1))).sum(1),(Y*dirs[i].reshape((1,-1))).sum(1)))
 
         #Newton's iteration
         X_grad = np.sum(np.stack([(X_tilde*dirs[i].reshape((1,-1))).sum(1) -
-                                  (X[a]*dirs[i].reshape((1,-1))).sum(1) for i in range(n_dirs)] / n_dirs),0)
+                                  (X[a[i]]*dirs[i].reshape((1,-1))).sum(1) for i in range(n_dirs)] / n_dirs),0)
         X_tilde = X_tilde - X_grad @ X_inv_hessian
 
         T,R,t = best_transform(X,X_tilde) # Transformation : Rotation + translation
