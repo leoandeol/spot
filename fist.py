@@ -132,8 +132,16 @@ def fist(X,Y, n_iter, n_dirs):
     for i in range(n_iter):
         #Find assignment
         a = []
-        for _ in range(n_dirs):
-            a.append(assignment((X*dirs[i].reshape((1,-1))).sum(1),(Y*dirs[i].reshape((1,-1))).sum(1)))
+        import matplotlib.pyplot as plt
+        for j in range(n_dirs):
+            X_proj = (X*dirs[j].reshape((1,-1))).sum(1)
+            Y_proj = (Y*dirs[j].reshape((1,-1))).sum(1)
+            a.append(assignment(X_proj,Y_proj))
+            plt.scatter(X_proj,[0]*len(X_proj))
+            plt.scatter(Y_proj,[1]*len(Y_proj))
+            for i in range(len(X_proj)):
+                plt.plot([X_proj[i], Y_proj[a[-1][i]]], [0,1])
+            plt.show()
 
         #Newton's iteration
         X_grad = np.sum(np.stack([(X_tilde*dirs[i].reshape((1,-1))).sum(1) -
@@ -142,6 +150,6 @@ def fist(X,Y, n_iter, n_dirs):
 
         T,R,t = best_transform(X,X_tilde) # Transformation : Rotation + translation
 
-        X_proj = T @ X_tilde
-        yield X_proj
+        X_trans = T @ X_tilde
+        yield X_trans
         
