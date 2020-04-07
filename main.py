@@ -35,7 +35,11 @@ if args.demo:
     plt.scatter(y[:,0],y[:,1])
     plt.show()
 
-    sols = fist(X,Y,args.iterations,args.directions)
+    x_projs = list(fist(x,y,args.iterations,args.directions))
+    x_last_proj = x_projs[-1]
+
+    plt.scatter(x_last_proj[:,0],x_last_proj[:,1])
+    plt.scatter(y[:,0],y[:,1])
     
 else:
     pass
