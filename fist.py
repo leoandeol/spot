@@ -129,7 +129,7 @@ def fist(X,Y, n_iter, n_dirs):
 
         #Newton's iteration
         X_grad = np.sum(np.stack([(X_tilde*dirs[i].reshape((1,-1))).sum(1) -
-                                  (a(X)*dirs[i].reshape((1,-1))).sum(1) for i in range(n_dirs)] / n_dirs),0)
+                                  (X[a]*dirs[i].reshape((1,-1))).sum(1) for i in range(n_dirs)] / n_dirs),0)
         X_tilde = X_tilde - X_grad @ X_inv_hessian
 
         T,R,t = best_transform(X,X_tilde) # Transformation : Rotation + translation
