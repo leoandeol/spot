@@ -65,7 +65,7 @@ def assignment(X,Y,t):
     a[0] = t[0]
     for mp in range(m):
         if t[mp+1] > a[mp]:
-            a[mp+1] = t[mp+1])
+            a[mp+1] = t[mp+1]
         else:
             s = retrieve_s(a,0,mp)
             r = retrieve_r(a,s,0,mp)
