@@ -58,10 +58,11 @@ def sum_non_shifted_costs(X,Y,a,start,end):
         cost += cost(X[i],Y[a[i]]) + cost(X[end+1],Y[a[end]+1])
     return cost
 
-def assignment(X,Y,t):
+def assignment(X,Y):
     m = X.shape[0]
     n = Y.shape[1]
     a = np.zeros(m)
+    t = nn_paper(X,Y, 0, m, 0, n, a) # Nearest neighbor match between X and Y
     a[0] = t[0]
     for mp in range(m):
         if t[mp+1] > a[mp]:
@@ -83,6 +84,8 @@ def assignment(X,Y,t):
 def best_transform(X, Y):
     # a recommenter/recoder
     assert X.shape == Y.shape
+    A = X
+    B = Y
 
     # get number of dimensions
     m = A.shape[1]
@@ -122,6 +125,7 @@ def fist(X,Y, n_iter, n_dirs):
 
     for i in range(n_iter):
         #Find assignment
+        a = assignment(X,Y)
 
         #Newton's iteration
         X_grad = np.sum(np.stack([(X_tilde*dirs[i].reshape((1,-1))).sum(1) -
