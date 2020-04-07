@@ -3,33 +3,23 @@ from math import sqrt, log, sin, cos, pi
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-def BoxMuller():
-    r = np.random.rand(2)
-    r1, r2 = r[0], r[1]
-    p = np.zeros((2))
-    f = sqrt(-2 * log(max(1E-12, min(1. - 1E-12, r1))))
-    p[0] = f * cos(2 * pi*r2)
-    p[1] = f * sin(2 * pi*r2)
-    return p;
+def generate_directions(dim=3, slices=100):
+    dirs = np.zeros((slices, dim))
+    for slice in range(slices):
+        n = 0
+        for i in range(0,dim,2):
+            randGauss = np.random.randn(2)
+            dirs[slice][i] = randGauss[0]
+            n += dirs[slice][i] * dirs[slice][i]
+            if i < dim-1:
+                dirs[slice][i + 1] = randGauss[1]
+                n += dirs[slice][i + 1] * dirs[slice][i + 1]
+        n = sqrt(n)
+        for i in range(dim):
+            dirs[slice][i] /= n
+    return dirs
 
-DIM = 3
-slices = 1000
-dirs = np.zeros((slices, DIM))
-for slice in range(slices):
-    n = 0
-    for i in range(0,DIM,2):
-        randGauss = BoxMuller()
-        randGauss = np.random.randn(2)
-        dirs[slice][i] = randGauss[0]
-        n += dirs[slice][i] * dirs[slice][i]
-        if i < DIM-1:
-            dirs[slice][i + 1] = randGauss[1]
-            n += dirs[slice][i + 1] * dirs[slice][i + 1]
-    n = sqrt(n)
-    for i in range(DIM):
-        dirs[slice][i] /= n
-
-    
+dirs = generate_directions()
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 ax.scatter(dirs[:,0],dirs[:,1],dirs[:,2])
