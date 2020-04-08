@@ -282,10 +282,10 @@ def best_transform(X, Y):
     U, S, Vt = np.linalg.svd(H)
     R = np.dot(Vt.T, U.T)
 
-    # special reflection case
-    if np.linalg.det(R) < 0:
-       Vt[m-1,:] *= -1
-       R = np.dot(Vt.T, U.T)
+    ## special reflection case
+    #if np.linalg.det(R) < 0:
+    #   Vt[m-1,:] *= -1
+    #   R = np.dot(Vt.T, U.T)
 
     # translation
     t = centroid_B.T - np.dot(R,centroid_A.T)
@@ -333,7 +333,7 @@ def fist(X,Y, n_iter, n_dirs):
         T,R,t = best_transform(X,X_tilde)
         # Transformation : Rotation + translation
         #print(X_tilde.shape,"@",R.shape,"+",t.shape)
-        X_tilde = (X @ R) - t[None,:]
+        X_tilde = (X @ R ) + t.reshape((1,-1))
         #C = np.ones((X.shape[0], X.shape[1]+1))
         #C[:,:X.shape[1]] = np.copy(X)
 
