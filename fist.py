@@ -252,7 +252,10 @@ def assignment(X,Y):
             plt.plot([X[i], Y[a[i]]], [1,0])
         plt.show()
         """
-        
+    for i in range(len(a)):
+        if a[i] == 40:
+            a[i] = 39
+    
     return a
 
 def best_transform(X, Y):
@@ -306,6 +309,7 @@ def fist(X,Y, n_iter, n_dirs):
             a.append(assignment(X_proj,Y_proj))
             
             if 40 in a[-1]:
+                print(a)
                 plt.scatter(X_proj,[1]*len(X_proj))
                 plt.scatter(Y_proj,[0]*len(Y_proj))
                 for i in range(len(X_proj)):
