@@ -305,13 +305,13 @@ def fist(X,Y, n_iter, n_dirs):
             Y_proj = (Y*dirs[j].reshape((1,-1))).sum(1)
             a.append(assignment(X_proj,Y_proj))
             
-            """
+            
             plt.scatter(X_proj,[1]*len(X_proj))
             plt.scatter(Y_proj,[0]*len(Y_proj))
             for i in range(len(X_proj)):
                 plt.plot([X_proj[i], Y_proj[a[-1][i]]], [1,0])
             plt.show()
-            """
+            
             
         #Newton's iteration
         X_grad = np.sum(np.stack([(X_tilde*dirs[k].reshape((1,-1))).sum(1) -
