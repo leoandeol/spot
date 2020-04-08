@@ -1,6 +1,6 @@
 import numpy as np
 import argparse
-from fist import fist
+from fist import fist, fist_2
 from data import read_ply, write_ply
 from tqdm import tqdm
 from time import time
@@ -35,7 +35,8 @@ if args.demo:
     plt.scatter(y[:,0],y[:,1])
     plt.show()
 
-    x_projs = list(fist(x,y,args.iterations,args.directions))
+    #x_projs = list(fist(x,y,args.iterations,args.directions))
+    x_projs = list(fist_2(x,y,args.iterations))
     x_last_proj = x_projs[-1]
 
     plt.scatter(x_last_proj[:,0],x_last_proj[:,1])
