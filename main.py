@@ -11,7 +11,7 @@ parser.add_argument("--source", type=str)
 parser.add_argument("--target", type=str)
 parser.add_argument("--output", default="out/"+str(time)+".ply", type=str)
 parser.add_argument("--iterations", default=20, type=int, help="Number of Iterations")
-parser.add_argument("--directions", default=100, type=int, help="Number of randomly sampled directions")
+parser.add_argument("--directions", default=200, type=int, help="Number of randomly sampled directions")
 parser.add_argument('--demo', dest='demo', action='store_true')
 #parser.add_argument('--no-cuda', dest='cuda', action='store_false')
 #parser.set_defaults(cuda=torch.cuda.is_available())
@@ -37,10 +37,16 @@ if args.demo:
 
     x_projs = list(fist(x,y,args.iterations,args.directions))
     x_last_proj = x_projs[-1]
-
+    
+    """
     plt.scatter(x_last_proj[:,0],x_last_proj[:,1])
     plt.scatter(y[:,0],y[:,1])
     plt.show()
+    """
+    for x_p in x_projs:
+        plt.scatter(x_p[:,0],x_p[:,1])
+        plt.scatter(y[:,0],y[:,1])
+        plt.show()
     
 else:
     pass

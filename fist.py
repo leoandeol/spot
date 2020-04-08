@@ -29,40 +29,55 @@ def nn(X,Y):
 # Retrieves the right most index of the point from Y (in the range of the already assigned)
 # that isn't assigned to a point from X'
 def retrieve_s(a,start,end):
-    s = a[end]
-    for i in range(end,start,-1):
+    s = a[end-1]
+    """
+    print(" ________ RETRIEVE S :")
+    print("         start = ",start)
+    print("         end = ",end)
+    print("         a[end-1] = ",a[end-1])
+    """
+    for i in range(end-1,start-1,-1):
         checker = a[i]
+        """
+        print("         s = ",s)
+        print("         checker = ",checker)
+        """
         if checker != s:
             return s
         s -= 1
+        
     return a[0] - 1
  
 # Retrieves the index r of the point from X such that a[r] = s+1
 # (s being the index given from the above function) 
 def retrieve_r(a,s,start,end):
-    for i in range(end,start,-1):
+    for i in range(end-1,start-1,-1):
         if a[i] == s+1:
             return i
     return start
     
 # Returns the sum of the costs when shifting all the current assignments to the left 
 def sum_shifted_costs(X,Y,a,start,end):
-    if a[end] >= Y.shape[0]-1 or end == X.shape[0]-1:
-        return np.inf
     cost_ = 0
     for i in range(start,end):
         cost_ += cost(X[i],Y[a[i]-1])
-    cost_ += cost(X[end+1],Y[a[end]])
+    cost_ += cost(X[end],Y[a[end]])
     return cost_
     
 # Returns the sum of the costs when keeping the current assignment and adding the new one on the right
 def sum_non_shifted_costs(X,Y,a,start,end):
-    if a[end] >= Y.shape[0]-1 or end == X.shape[0]-1:
+    """
+    print(" ________ SUM NON SHIFTED COSTS")
+    print("         end = ",end)
+    print("         a[end-1] = ",a[end-1])
+    print("         Y.shape[0] = ",Y.shape[0])
+    """
+    if a[end-1] >= Y.shape[0]-1:
         return np.inf
     cost_ = 0    
     for i in range(start,end):
         cost_ += cost(X[i],Y[a[i]])
-    cost_ += cost(X[end+1],Y[a[end]+1])
+    cost_ += cost(X[end],Y[a[end]+1])
     return cost_
     
 
@@ -228,23 +243,41 @@ def assignment(X,Y):
         return a  
     
     nn_paper(X,Y,start0,end0,start1,end1, t) # Nearest neighbor match between X and Y
-            
+    """
+    print("Latest NN : ", t)
+    print("Current assignment : ",a)
+    print("Start 0 : ",start0)
+    """     
     a[start0] = t[start0]
     for mp in range(start0+1,end0):
         if t[mp] > a[mp-1]:
                 a[mp] = t[mp]            
         else:
-            s = retrieve_s(a,start0,mp)
-            r = retrieve_r(a,s,start0,mp)
+            s = retrieve_s(a,0,mp)
+            r = retrieve_r(a,s,0,mp)
             w1 = sum_shifted_costs(X,Y,a,r,mp)
             w2 = sum_non_shifted_costs(X,Y,a,r,mp)
+            """            
+            print("     s : ",s)
+            print("     r : ",r)
+            print("     w1 : ",w1)
+            print("     w2 : ",w2)
+            print("     mp : ",mp)
+            print("     a[mp] :",a[mp])
+            print("     a[mp-1] :",a[mp-1])
+            print("     a[r:mp] :",a[r:mp])
+            print("     a[r:mp-1] :",a[r:mp-1])
+            print("     np.arange(s,a[mp]) :",np.arange(s,a[mp]))
+            print("     np.arange(s,a[mp-1]) :",np.arange(s,a[mp-1]))
+            """               
             if w1 < w2:
                 # case 1
                 a[mp] = a[mp-1]
-                a[r:mp] = np.arange(s,a[mp])
+                a[r:mp] = np.arange(s,a[mp-1])
             else:
                 # case 2
                 a[mp] = a[mp-1]+1
+        #print("       Updated assignment : ",a)
         """
         plt.scatter(X,[1]*len(X))
         plt.scatter(Y,[0]*len(Y))
@@ -252,14 +285,25 @@ def assignment(X,Y):
             plt.plot([X[i], Y[a[i]]], [1,0])
         plt.show()
         """
-    while 40 in a:
-        s = retrieve_s(a,start0,m-1)
-        r = retrieve_r(a,s,start0,m-1)
-        print("s : ",s)
-        print("r : ",r)
-        a[mp] = a[mp-1]
-        a[r:mp] = np.arange(s,a[mp])
-
+    
+    while np.max(a) >= 40:
+        for i in range(m):
+            if(a[i] >= 40):
+                val = a[i]
+                s = retrieve_s(a,0,i)
+                r = retrieve_r(a,s,0,i)
+                """
+                print("--- BEFORE ---")
+                print("a : ",a)
+                print("s : ",s)
+                print("r : ",r)
+                """
+                a[r:i] = np.arange(s,a[i]-1)
+                a[i] = val - 1
+                """
+                print("--- AFTER ---")
+                print("a : ",a)
+                """
     return a    
 
 def best_transform(X, Y):
@@ -309,7 +353,7 @@ def fist(X,Y, n_iter, n_dirs):
         print("iter",i)
         
         for j in range(n_dirs):
-            X_proj = (X*dirs[j].reshape((1,-1))).sum(1)
+            X_proj = (X_tilde*dirs[j].reshape((1,-1))).sum(1)
             Y_proj = (Y*dirs[j].reshape((1,-1))).sum(1)
             a.append(assignment(X_proj,Y_proj))
             if 40 in a[-1]:
