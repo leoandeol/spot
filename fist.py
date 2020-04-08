@@ -255,30 +255,12 @@ def assignment(X,Y):
     while 40 in a:
         s = retrieve_s(a,start0,m-1)
         r = retrieve_r(a,s,start0,m-1)
+        print("s : ",s)
+        print("r : ",r)
         a[mp] = a[mp-1]
         a[r:mp] = np.arange(s,a[mp])
 
-    return a
-    
-def correspondanceNd(X,Y,n_iter):    
-    X_tilde = np.copy(X)
-    dim = X_tilde.shape[1]
-    X_inv_hessian = np.eye(dim)*dim
-    
-    for i in range(n_iter):
-        dirs = generate_directions(dim,dim)
-        a = []
-        for j in range(dim):
-            X_proj = (X_tilde*dirs[j].reshape((1,-1))).sum(1)
-            Y_proj = (Y*dirs[j].reshape((1,-1))).sum(1)
-            a.append(assignment(X_proj,Y_proj))
-            
-        #Newton's iteration
-        X_grad = np.sum(np.stack([(X_tilde*dirs[k].reshape((1,-1))) -
-                                  (Y[a[k]]*dirs[k].reshape((1,-1))) for k in range(dim)]),0) / dim
-        X_tilde = X_tilde - X_grad @ X_inv_hessian
-    return X_tilde
-    
+    return a    
 
 def best_transform(X, Y):
     # a recommenter/recoder
@@ -314,14 +296,6 @@ def best_transform(X, Y):
     T[:m, m] = t
 
     return T, R, t
-    
-def fist_2(X,Y,n_iter):
-    X_tilde = np.copy(X)
-    for i in range(n_iter):
-        X_tilde = correspondanceNd(X_tilde,Y,n_iter)        
-        T,R,t = best_transform(X_tilde,X) # Transformation : Rotation + translation
-        X_trans = (X_tilde @ R) + t[None,:]
-        yield X_trans
         
 def fist(X,Y, n_iter, n_dirs):
     dim = X.shape[1]
@@ -335,7 +309,7 @@ def fist(X,Y, n_iter, n_dirs):
         print("iter",i)
         
         for j in range(n_dirs):
-            X_proj = (X_tilde*dirs[j].reshape((1,-1))).sum(1)
+            X_proj = (X*dirs[j].reshape((1,-1))).sum(1)
             Y_proj = (Y*dirs[j].reshape((1,-1))).sum(1)
             a.append(assignment(X_proj,Y_proj))
             if 40 in a[-1]:
