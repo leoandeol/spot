@@ -298,8 +298,8 @@ def assignment(X,Y):
                 print("s : ",s)
                 print("r : ",r)
                 """
-                a[r:i] = np.arange(s,a[i]-1)
-                a[i] = val - 1
+                a[i] = a[i-1]
+                a[r:i] = np.arange(s,a[i-1])
                 """
                 print("--- AFTER ---")
                 print("a : ",a)

@@ -10,7 +10,7 @@ parser = argparse.ArgumentParser(prog="FIST",description="Fast Iterative Sliced 
 parser.add_argument("--source", type=str)
 parser.add_argument("--target", type=str)
 parser.add_argument("--output", default="out/"+str(time)+".ply", type=str)
-parser.add_argument("--iterations", default=20, type=int, help="Number of Iterations")
+parser.add_argument("--iterations", default=10, type=int, help="Number of Iterations")
 parser.add_argument("--directions", default=200, type=int, help="Number of randomly sampled directions")
 parser.add_argument('--demo', dest='demo', action='store_true')
 #parser.add_argument('--no-cuda', dest='cuda', action='store_false')
