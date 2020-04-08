@@ -19,8 +19,8 @@ parser.add_argument('--demo', dest='demo', action='store_true')
 args = parser.parse_args()
 
 if args.demo:
-    nx = 200
-    ny = 400
+    nx = 20
+    ny = 40
     tx = np.linspace(0,np.pi,nx)+1e-2
     ty = np.linspace(0,2*np.pi,ny)
     x = np.zeros((nx,2))
