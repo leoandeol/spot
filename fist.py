@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from dirs import generate_directions
+from tqdm import tqdm
 
 def cost(x,y):
     z = x-y
@@ -347,7 +348,7 @@ def fist(X,Y, n_iter, n_dirs):
     X_inv_hessian = np.eye(dim)*dim
     dirs = generate_directions(dim,n_dirs)
 
-    for i in range(n_iter):
+    for i in tqdm(range(n_iter)):
         #Find assignment
         a = []
         #print("iter",i)

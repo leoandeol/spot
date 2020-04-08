@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 parser = argparse.ArgumentParser(prog="FIST",description="Fast Iterative Sliced Transport (Bonneel et al, 2019) - Implemented by Leo Andeol (ENS Paris-Saclay) and Lothair Kizardjian (University Paris-Dauphine)")
 parser.add_argument("--source", type=str)
 parser.add_argument("--target", type=str)
-parser.add_argument("--output", default="out/"+str(time)+".ply", type=str)
+parser.add_argument("--output", default="out/"+str(time())+".ply", type=str)
 parser.add_argument("--iterations", default=10, type=int, help="Number of Iterations")
 parser.add_argument("--directions", default=100, type=int, help="Number of randomly sampled directions")
 parser.add_argument('--demo', dest='demo', action='store_true')
@@ -48,5 +48,14 @@ if args.demo:
     #    plt.show()
     
 else:
-    pass
+    source_ = read_ply(args.source)
+    target_ = read_ply(args.target)
+    source = np.zeros((len(source_),3))
+    target = np.zeros((len(target_),3))
+    for i,j in enumerate(source_):
+        source[i]=np.array([float(k) for k in j])
+    for i,j in enumerate(target_):
+        target[i]=np.array([float(k) for k in j])
+    x_proj = list(fist(source,target,args.iterations,args.directions))[-1]
+    write_ply(args.output,x_proj,["x","y","z"])
 
