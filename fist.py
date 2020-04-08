@@ -252,10 +252,12 @@ def assignment(X,Y):
             plt.plot([X[i], Y[a[i]]], [1,0])
         plt.show()
         """
-    #for i in range(len(a)):
-    #    if a[i] == 40:
-    #        a[i] = 39
-    
+    while 40 in a:
+        s = retrieve_s(a,start0,m-1)
+        r = retrieve_r(a,s,start0,m-1)
+        a[mp] = a[mp-1]
+        a[r:mp] = np.arange(s,a[mp])
+
     return a
 
 def best_transform(X, Y):
@@ -295,7 +297,7 @@ def best_transform(X, Y):
             
 def fist(X,Y, n_iter, n_dirs):
     dim = X.shape[1]
-    X_tilde = np.zeros(X.shape)
+    X_tilde = np.copy(X)
     X_inv_hessian = np.eye(dim)*dim
     dirs = generate_directions(dim,n_dirs)
 
@@ -304,7 +306,7 @@ def fist(X,Y, n_iter, n_dirs):
         a = []
         
         for j in range(n_dirs):
-            X_proj = (X*dirs[j].reshape((1,-1))).sum(1)
+            X_proj = (X_tilde*dirs[j].reshape((1,-1))).sum(1)
             Y_proj = (Y*dirs[j].reshape((1,-1))).sum(1)
             a.append(assignment(X_proj,Y_proj))
             if 40 in a[-1]:
@@ -323,14 +325,16 @@ def fist(X,Y, n_iter, n_dirs):
                                   (Y[a[k]]*dirs[k].reshape((1,-1))) for k in range(n_dirs)]),0) / n_dirs
         #print(X_tilde.shape,"-",X_grad.shape,"@",X_inv_hessian.shape)
         X_tilde = X_tilde - X_grad @ X_inv_hessian
+        #print(np.min(X_grad),np.max(X_grad))
 
-        T,R,t = best_transform(X,X_tilde) # Transformation : Rotation + translation
+        T,R,t = best_transform(X,X_tilde)
+        # Transformation : Rotation + translation
         #print(X_tilde.shape,"@",R.shape,"+",t.shape)
-        #X_trans = (X_tilde @ R) + t[None,:]
-        C = np.ones((X.shape[0], X.shape[1]+1))
-        C[:,:X.shape[1]] = np.copy(X_tilde)
+        X_tilde = (X_tilde @ R) + t[None,:]
+        #C = np.ones((X.shape[0], X.shape[1]+1))
+        #C[:,:X.shape[1]] = np.copy(X_tilde)
 
         # Transform C
-        X_trans = np.dot(T, C.T).T
-        yield X_trans
+        #X_trans = np.dot(T, C.T).T
+        yield X_tilde
         
