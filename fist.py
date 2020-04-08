@@ -356,8 +356,6 @@ def fist(X,Y, n_iter, n_dirs):
             X_proj = (X_tilde*dirs[j].reshape((1,-1))).sum(1)
             Y_proj = (Y*dirs[j].reshape((1,-1))).sum(1)
             a.append(assignment(X_proj,Y_proj))
-            if 40 in a[-1]:
-                print(dirs[j])
             #if 40 in a[-1]:
             #    print("error")
             #    plt.scatter(X_proj,[1]*len(X_proj))
