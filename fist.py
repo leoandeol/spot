@@ -252,9 +252,9 @@ def assignment(X,Y):
             plt.plot([X[i], Y[a[i]]], [1,0])
         plt.show()
         """
-    if 40 in a[-1]:
-        s = retrieve_s(a,start0,m)
-        r = retrieve_r(a,s,start0,m)
+    while 40 in a:
+        s = retrieve_s(a,start0,m-1)
+        r = retrieve_r(a,s,start0,m-1)
         a[mp] = a[mp-1]
         a[r:mp] = np.arange(s,a[mp])
         
