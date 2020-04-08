@@ -257,7 +257,7 @@ def assignment(X,Y):
         r = retrieve_r(a,s,start0,m-1)
         a[mp] = a[mp-1]
         a[r:mp] = np.arange(s,a[mp])
-        
+
     return a
     
 def correspondanceNd(X,Y,n_iter):    
@@ -337,22 +337,32 @@ def fist(X,Y, n_iter, n_dirs):
             X_proj = (X_tilde*dirs[j].reshape((1,-1))).sum(1)
             Y_proj = (Y*dirs[j].reshape((1,-1))).sum(1)
             a.append(assignment(X_proj,Y_proj))
-            
+            if 40 in a[-1]:
+                print(dirs[j])
             #if 40 in a[-1]:
+            #    print("error")
             #    plt.scatter(X_proj,[1]*len(X_proj))
             #    plt.scatter(Y_proj,[0]*len(Y_proj))
             #    for i in range(len(X_proj)):
-            #        plt.plot([X_proj[i], Y_proj[a[-1][i]]], [1,0])
+            #        if a[-1][i] != 40:
+            #            plt.plot([X_proj[i], Y_proj[a[-1][i]]], [1,0])
             #    plt.show()
             
         #Newton's iteration
         X_grad = np.sum(np.stack([(X_tilde*dirs[k].reshape((1,-1))) -
                                   (Y[a[k]]*dirs[k].reshape((1,-1))) for k in range(n_dirs)]),0) / n_dirs
-        print(X_tilde.shape,"-",X_grad.shape,"@",X_inv_hessian.shape)
+        #print(X_tilde.shape,"-",X_grad.shape,"@",X_inv_hessian.shape)
         X_tilde = X_tilde - X_grad @ X_inv_hessian
+        #print(np.min(X_grad),np.max(X_grad))
 
-        T,R,t = best_transform(X,X_tilde) # Transformation : Rotation + translation
-        print(X_tilde.shape,"@",R.shape,"+",t.shape)
-        X_trans = (X_tilde @ R) + t[None,:]
-        yield X_trans
+        T,R,t = best_transform(X,X_tilde)
+        # Transformation : Rotation + translation
+        #print(X_tilde.shape,"@",R.shape,"+",t.shape)
+        X_tilde = (X_tilde @ R) + t[None,:]
+        #C = np.ones((X.shape[0], X.shape[1]+1))
+        #C[:,:X.shape[1]] = np.copy(X_tilde)
+
+        # Transform C
+        #X_trans = np.dot(T, C.T).T
+        yield X_tilde
         
