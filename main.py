@@ -40,6 +40,7 @@ if args.demo:
 
     plt.scatter(x_last_proj[:,0],x_last_proj[:,1])
     plt.scatter(y[:,0],y[:,1])
+    plt.show()
     
 else:
     pass
