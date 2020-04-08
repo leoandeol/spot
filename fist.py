@@ -252,10 +252,12 @@ def assignment(X,Y):
             plt.plot([X[i], Y[a[i]]], [1,0])
         plt.show()
         """
-    for i in range(len(a)):
-        if a[i] == 40:
-            a[i] = 39
-    
+    if 40 in a[-1]:
+        s = retrieve_s(a,start0,m)
+        r = retrieve_r(a,s,start0,m)
+        a[mp] = a[mp-1]
+        a[r:mp] = np.arange(s,a[mp])
+        
     return a
 
 def best_transform(X, Y):
