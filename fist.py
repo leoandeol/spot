@@ -323,6 +323,6 @@ def fist(X,Y, n_iter, n_dirs):
 
         T,R,t = best_transform(X,X_tilde) # Transformation : Rotation + translation
         print(X_tilde.shape,"@",R.shape,"+",t.shape)
-        X_trans = (X_tilde @ R) +t 
+        X_trans = (X_tilde @ R) + t[None,:]
         yield X_trans
         
