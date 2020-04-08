@@ -308,13 +308,12 @@ def fist(X,Y, n_iter, n_dirs):
             Y_proj = (Y*dirs[j].reshape((1,-1))).sum(1)
             a.append(assignment(X_proj,Y_proj))
             
-            if 40 in a[-1]:
-                print(a)
-                plt.scatter(X_proj,[1]*len(X_proj))
-                plt.scatter(Y_proj,[0]*len(Y_proj))
-                for i in range(len(X_proj)):
-                    plt.plot([X_proj[i], Y_proj[a[-1][i]]], [1,0])
-                plt.show()
+            #if 40 in a[-1]:
+            #    plt.scatter(X_proj,[1]*len(X_proj))
+            #    plt.scatter(Y_proj,[0]*len(Y_proj))
+            #    for i in range(len(X_proj)):
+            #        plt.plot([X_proj[i], Y_proj[a[-1][i]]], [1,0])
+            #    plt.show()
             
         #Newton's iteration
         X_grad = np.sum(np.stack([(X_tilde*dirs[k].reshape((1,-1))) -
@@ -323,7 +322,7 @@ def fist(X,Y, n_iter, n_dirs):
         X_tilde = X_tilde - X_grad @ X_inv_hessian
 
         T,R,t = best_transform(X,X_tilde) # Transformation : Rotation + translation
-
-        X_trans = T @ X_tilde
+        print(X_tilde.shape,"@",R.shape,"+",t.shape)
+        X_trans = (X_tilde @ R) +t 
         yield X_trans
         
