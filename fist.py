@@ -304,6 +304,7 @@ def fist(X,Y, n_iter, n_dirs):
     for i in range(n_iter):
         #Find assignment
         a = []
+        print("iter",i)
         
         for j in range(n_dirs):
             X_proj = (X_tilde*dirs[j].reshape((1,-1))).sum(1)
@@ -330,11 +331,12 @@ def fist(X,Y, n_iter, n_dirs):
         T,R,t = best_transform(X,X_tilde)
         # Transformation : Rotation + translation
         #print(X_tilde.shape,"@",R.shape,"+",t.shape)
-        X_tilde = (X_tilde @ R) + t[None,:]
+        X_tilde = (X @ R) - t[None,:]
         #C = np.ones((X.shape[0], X.shape[1]+1))
-        #C[:,:X.shape[1]] = np.copy(X_tilde)
+        #C[:,:X.shape[1]] = np.copy(X)
 
         # Transform C
-        #X_trans = np.dot(T, C.T).T
+        #X_tilde = np.dot(T, C.T).T[:,:X.shape[1]]
+        #print(X_tilde.shape, X.shape)
         yield X_tilde
         
