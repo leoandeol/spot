@@ -286,9 +286,9 @@ def assignment(X,Y):
         plt.show()
         """
     
-    while np.max(a) >= 40:
+    while np.max(a) >= Y.shape[0]-1:
         for i in range(m):
-            if(a[i] >= 40):
+            if(a[i] >= Y.shape[0]-1):
                 val = a[i]
                 s = retrieve_s(a,0,i)
                 r = retrieve_r(a,s,0,i)
