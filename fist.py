@@ -350,7 +350,7 @@ def fist(X,Y, n_iter, n_dirs):
     for i in range(n_iter):
         #Find assignment
         a = []
-        print("iter",i)
+        #print("iter",i)
         
         for j in range(n_dirs):
             X_proj = (X_tilde*dirs[j].reshape((1,-1))).sum(1)

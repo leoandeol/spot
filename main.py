@@ -19,8 +19,8 @@ parser.add_argument('--demo', dest='demo', action='store_true')
 args = parser.parse_args()
 
 if args.demo:
-    nx = 20
-    ny = 40
+    nx = 200
+    ny = 400
     tx = np.linspace(0,np.pi,nx)+1e-2
     ty = np.linspace(0,2*np.pi,ny)
     x = np.zeros((nx,2))
@@ -38,15 +38,14 @@ if args.demo:
     x_projs = list(fist(x,y,args.iterations,args.directions))
     x_last_proj = x_projs[-1]
     
-    """
     plt.scatter(x_last_proj[:,0],x_last_proj[:,1])
     plt.scatter(y[:,0],y[:,1])
     plt.show()
-    """
-    for x_p in x_projs:
-        plt.scatter(x_p[:,0],x_p[:,1])
-        plt.scatter(y[:,0],y[:,1])
-        plt.show()
+    
+    #for x_p in x_projs:
+    #    plt.scatter(x_p[:,0],x_p[:,1])
+    #    plt.scatter(y[:,0],y[:,1])
+    #    plt.show()
     
 else:
     pass
