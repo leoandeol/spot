@@ -34,23 +34,25 @@ if args.demo:
     plt.scatter(x[:,0],x[:,1])
     plt.scatter(y[:,0],y[:,1])
     plt.show()
-    #x_projs = list(fist(x,y,args.iterations,args.directions))
-    #x_last_proj = x_projs[-1]
     
-    #plt.scatter(x_last_proj[:,0],x_last_proj[:,1])
-    #plt.scatter(y[:,0],y[:,1])
-    #plt.show()
+    demo_1 = False
     
-    #for x_p in x_projs:
-    #    plt.scatter(x_p[:,0],x_p[:,1])
-    #    plt.scatter(y[:,0],y[:,1])
-    #    plt.show()
-    fist_iter = 200
-    slices = 100
-    scaling = 1
-    rot = np.identity(3)
-    trans = np.zeros(3)
-    paper_fist(fist_iter, slices, x, y, rot, trans, True, scaling)
+    if demo_1:
+        x_projs = list(fist(x,y,args.iterations,args.directions))
+        x_last_proj = x_projs[-1]
+        
+        plt.scatter(x_last_proj[:,0],x_last_proj[:,1])
+        plt.scatter(y[:,0],y[:,1])
+        plt.show()
+        
+    else:
+        # tried to implement all the papers code but curently doesn't work
+        fist_iter = 200
+        slices = 100
+        scaling = 1
+        rot = np.identity(3)
+        trans = np.zeros(3)
+        paper_fist(fist_iter, slices, x, y, rot, trans, True, scaling)
     
     plt.scatter(x[:,0],x[:,1])
     plt.scatter(y[:,0],y[:,1])
