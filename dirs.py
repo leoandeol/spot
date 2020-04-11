@@ -3,6 +3,16 @@ from math import sqrt, log, sin, cos, pi
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+class Projector:
+    def __init__(self,dir_):
+        self.dir = dir_
+    
+    def proj(self,point):
+        proj_ = 0
+        for i in range(len(self.dir)):
+            proj_ += point[i] * self.dir[i]
+        return proj_
+
 def generate_directions(dim=3, slices=100):
     #dirs = np.zeros((slices, dim))
     #for slice in range(slices):
