@@ -294,3 +294,29 @@ def describe_element(name, df):
             element.append('property ' + f + ' ' + df.columns.values[i])
 
     return element
+    
+def ply_to_pts(ply_path,pts_path):
+    ply_file = read_ply(ply_path)
+    points = np.zeros((len(ply_file),3))
+    for i,j in enumerate(ply_file):
+        points[i]=np.array([float(k) for k in j])
+    with open(pts_path, 'w') as file:
+        for point in points:
+            file.write("v {} {} {}\n".format(point[0],point[1],point[2]))
+            
+
+if __name__ == "__main__":
+    bunny_r = "data/bunny_returned.ply"
+    bunny_o = "data/bunny_original.ply"
+    dest_r = "data/bunny_returned.pts"
+    dest_o = "data/bunny_original.pts"
+    dame_1 = "data/Notre_Dame_Des_Champs_1.ply"
+    dest_1 = "data/Notre_Dame_Des_Champs_1.pts"
+    dame_2 = "data/Notre_Dame_Des_Champs_2.ply"
+    dest_2 = "data/Notre_Dame_Des_Champs_2.pts"
+    
+    ply_to_pts(bunny_r,dest_r)
+    ply_to_pts(bunny_o,dest_o)
+    ply_to_pts(dame_1,dest_1)
+    ply_to_pts(dame_2,dest_2)
+    
